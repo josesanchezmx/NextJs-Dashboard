@@ -1,7 +1,14 @@
-export default function CustomersPage() {
-  return (
-    <div>
-      <h1>Customers</h1>
-    </div>
-  );
+import CustomersTable from '@/app/ui/customers/table';
+import { fetchFilteredCustomers } from '@/app/lib/data';
+
+export default async function CustomersPage(props: {
+  searchParams?: Promise<{
+    query?: string;
+  }>;
+}) {
+  const searchParams = await props.searchParams;
+  const query = searchParams?.query || '';
+  const customers = await fetchFilteredCustomers(query);
+
+  return <CustomersTable customers={customers} />;
 }
